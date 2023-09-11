@@ -4,12 +4,20 @@ author: "Megan Hokama"
 format: html
 toc: true
 ---
+#install packages and download data
+install.packages("pacman")
+pacman::p_load("tidyverse")
+install.packages("devtools")
+library("devtools")
+devtools::install_github("rstudio-education/dsbox")
+install.packages('dsbox')
+library(dsbox)
 
 ## 1 - Road traffic accidents in Edinburgh
-
 ```{r label-me-1}
 
 ```
+
 
 ## 2 - NYC marathon winners
 
