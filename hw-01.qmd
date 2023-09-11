@@ -13,8 +13,49 @@ devtools::install_github("rstudio-education/dsbox")
 install.packages('dsbox')
 library(dsbox)
 
+#set theme for ggplot
+ggplot2::theme_set(ggplot2::theme_minimal(base_size=11))
+
+#set width of code output
+options(width = 65)
+
+# set figure parameters for knitr
+knitr::opts_chunk$set(
+  fig.width = 7,        #7" width
+  fig.asp = 0.618,      #the golden ratio
+  fig.retina = 3,       #dpi multiplier for displaying HTML output on retina
+  fig.align = "center", #center align figures
+  dpi = 300             #higher dpi, sharper image
+)
+
+
+
+glimpse(accidents)
 ## 1 - Road traffic accidents in Edinburgh
-```{r label-me-1}
+```{r identify day type using if-else command}
+
+day_type_vector <- c(Monday = "Weekday", Tuesday = "Weekday", Wednesday = "Weekday", Thursday = "Weekday", Friday = "Weekday",Saturday = "Weekend", Sunday = "Weekend")
+
+# Use function command
+type <- function(day_of_week) 
+{return(ifelse(day_of_week %in% names(day_type_vector), day_type_vector[day_of_week], "NA"))
+}
+
+# Create new column
+accidents$typeday <- sapply(accidents$day_of_week, type)
+
+#Create ggplot with them all in one plot
+ggplot(data = accidents, aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~ typeday, ncol = 1) + 
+  scale_fill_discrete(name="Severity")+
+  labs(
+    x        = "Time of the day",
+    y        = "Density",
+    title    = "Number of accidents throughout the day",
+    subtitle = "By day of week and severity",
+  )
+```
 
 ```
 
