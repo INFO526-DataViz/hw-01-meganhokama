@@ -5,6 +5,7 @@ format: html
 toc: true
 ---
 #install packages and download data
+library()
 install.packages("pacman")
 pacman::p_load("tidyverse")
 install.packages("devtools")
@@ -12,6 +13,7 @@ library("devtools")
 devtools::install_github("rstudio-education/dsbox")
 install.packages('dsbox')
 library(dsbox)
+library(tidyverse)
 
 #set theme for ggplot
 ggplot2::theme_set(ggplot2::theme_minimal(base_size=11))
@@ -32,7 +34,7 @@ knitr::opts_chunk$set(
 
 glimpse(accidents)
 ## 1 - Road traffic accidents in Edinburgh
-```{r identify day type using if-else command}
+```{r create ggplot by creating a separate column of day types and creating a plot comparing based on type of day}
 
 day_type_vector <- c(Monday = "Weekday", Tuesday = "Weekday", Wednesday = "Weekday", Thursday = "Weekday", Friday = "Weekday",Saturday = "Weekend", Sunday = "Weekend")
 
@@ -59,11 +61,60 @@ ggplot(data = accidents, aes(x = time, fill = severity)) +
 
 ```
 
+#Interpretation: There are no fatal accidents on the weekend compared to the weekdays. On both weekends and weekdays, accidents increase in density during the evening hours (16:00-20:00). 
 
 ## 2 - NYC marathon winners
 
 ```{r label-me-2}
+install.packages("openintro")
+library("openintro")
 
+#Part A
+nyc <- nyc_marathon
+library(psych)
+describe(nyc)
+
+#Histogram with distribution of marathon times of all runners 
+nyc%>%
+  ggplot(aes(x=time_hrs)) + 
+  geom_histogram() +
+  labs (x = "Marathon Time",
+        y = "Runner Count")
+
+#Boxplot with distribution of marathon times of all runners
+nyc%>%
+  ggplot(aes(x=time_hrs)) +
+  geom_boxplot() +
+  labs(x = "Marathon Time",
+      y = "Runner Count")
+  
+#The histogram gives more information in regards to the count for all time hours. 
+
+#Part B
+ggplot(nyc, aes(x=division, y=time_hrs, fill=division)) + 
+geom_boxplot() + 
+scale_fill_manual(values = c("Men" = rgb(0.1,0.2,0.3), "Women" = rgb(0.1,0.2,0.3))) +
+theme(legend.position="none")
+labs(x = "Gender",
+      y = "Marathon Times") 
+      
+    #Based on the box plots, men have lower marathon times compared to women. Additionally, it shows women having more variation and outliers in terms of marathon times compared to men. 
+
+#Part C
+#The redundancy is the gender legend as it is not needed since the x-axis already indicates this. 
+ggplot(nyc, aes(x=division, y=time_hrs)) + 
+geom_boxplot() + 
+theme(legend.position="none")
+labs(x = "Gender",
+      y = "Marathon Times") 
+
+#Part D -It's not running and keeps giving an error in recognizing geom_line
+ggplot(nyc, aes(x=year, y=time_hrs, shape=division))+
+  geom_line() +
+  scale_color_manual(values = c("Men" = rgb(0.1,0.2,0.3), "Women" = rgb(0.1,0.2,0.3)))+
+  scale_shape_manual(values = c("Men" = 5, "Women" = 6)) +
+  scale_fill_discrete(name="Gender") +
+  labs(x = "Year", y = "Marathon Time)
 ```
 
 ## 3 - US counties
