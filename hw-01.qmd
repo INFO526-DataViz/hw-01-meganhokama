@@ -65,7 +65,7 @@ ggplot(data = accidents, aes(x = time, fill = severity)) +
 
 ## 2 - NYC marathon winners
 
-```{r label-me-2}
+```{r Comparing Histograms and Boxplots to determine marathon time and gender}
 install.packages("openintro")
 library("openintro")
 
