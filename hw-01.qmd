@@ -118,9 +118,111 @@ ggplot(nyc, aes(x=year, y=time_hrs, shape=division))+
 ```
 
 ## 3 - US counties
+```{r US County Plots
+county
+#Part A
+ggplot(county) + 
+  geom_point( aes(x=median_edu, y=median_hh_income))+
+  geom_boxplot(aes(x = smoking_ban, y = pop2017))
+  
+#Firstly, the variables of x and y for the scatterplot and boxplot do not align making it difficult to visualize the data. Additionally, I am having a difficult time making a connection to what the person would want to find when combining the box plot and the scatter plot. Why are we looking at these specific variables and what is the story we are trying to tell?
 
+#Part B
+#I think the plot that groups them in a more vertical way, similar to columns. This is visually more easier to interpret when trying to compare across education levels as the y-axis doesn't seem as squished with all the values listed in each group. This reduces redundancy in the plot and allows for easier comparison. 
+
+#Part C
+```
 
 ## 4 - Rental apartments in SF
+```{r create ggplot by creating a separate column of day types and creating a plot comparing based on type of day}
+library(dplyr)
+rent_data <-readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-07-05/rent.csv') #<1>
+glimpse(rent_data)
+describe(rent_data)
 
+rent_sf<-filter(rent_data, city == "san francisco")
+
+rent_sf2<-filter(rent_sf, room_in_apt == 0)
+
+nhood2<-c("lakeshore", "NOPA", "mission district", "inner richmond", "portola")
+
+year2<-c("2016", "2017")
+
+nhood3 <-rent_sf2 %>%
+        filter(nhood %in% nhood2)
+        
+yearnhood<-nhood3 %>%
+          filter(year %in% year2)
+        
+yearnhood %>%
+  ggplot(aes(x = beds, y = price)) + 
+  geom_tile(aes(fill=nhood))+
+  scale_fill_discrete(name="Neighborhood") +
+  labs(title = "Rental prices per bedroom across different neighborhoods in San Francisco",
+        x = "Bedrooms",
+        y = "Price")
+        
+#I chose to use a Geom Tile since we are using three variables which is price, bedrooms, and neigbhorhood. According to lecture, this is one method that would be effective in illustrating 3 variables. However, I am having difficulty in displaying it correctly, the tiles are somewhat in a line shape and I might need guidance in fixing this. 
+
+```
 
 ## 5 - Napoleon’s march.
+```{r Recreating the Napoleons March}
+#
+#Read data
+napoleon <- read_rds("data/napoleon.rds")
+glimpse(napoleon)
+
+#Load libraries
+library(scales)
+library(grid)
+library(gridExtra)
+library(dplyr)
+install.packages("gridExtra")
+
+#http://euclid.psych.yorku.ca/www/psy6135/tutorials/Minard.html
+#I utilized the above link to determine the x and y coordinates. In this case, we are using the lat and long as the x and y coordinates to create a representation of long and lat on the x and y coordinates. 
+ggplot(napoleon$troops, aes(long, lat))  + 
+      geom_path(aes(size = survivors))
+      
+#Create a plot that indicates the amount of survivors indicated by size. Direction is indicated by different colors. The colors are indicated by the direction of advancing or retreat. 
+breaks <- c(1, 2, 3) * 10^5 
+ggplot(napoleon$troops, aes(long, lat)) +
+        geom_path(aes(size = survivors, colour = direction, group = group),
+                  lineend="round") +
+    scale_size("Survivors", range = c(1,10), #c(0.5, 15),
+               breaks=breaks, labels=scales::comma(breaks)) +
+    scale_color_manual("Direction", 
+                       values = c("#E8CBAB", "#1F1A1B"), 
+                       labels=c("Advance", "Retreat"))
+                       
+
+
+#Add in the cities using geom text. This will allow us to put in labels of the cities corresponding to certain points on the graph. 
+plot_troops +   
+    geom_point(data = napoleon$cities) +
+  geom_text(data = napoleon$cities, aes(label = city), vjust = 1.5) 
+  
+  plot_troops_cities <- last_plot()
+  
+#Develop temperature line graph using geom path. This will allow to create points within the line graph. 
+ggplot(napoleon$temp, aes(long, temp)) +
+    geom_path(color="grey", size=1.5) +
+    geom_point(size=2) 
+
+#label the points using the format utilized in the Napoleon March
+Minard.temp <- napoleon$temp %>%
+    mutate(label = paste0(temp, "° ", date))
+head(Minard.temp$label)
+
+#put the modified labels in the plot 
+ggplot(Minard.temp, aes(long, temp)) +
+    geom_path(color="red", size=1.5) +
+    geom_point(size=1) 
+plot_temp <- last_plot()  
+
+#Use the grid arrange command to put the two plots together
+ grid.arrange(plot_troops_cities, plot_temp)
+
+
+```
