@@ -116,7 +116,7 @@ ggplot(nyc, aes(x=year, y=time_hrs, shape=division))+
   scale_color_manual(values = c("Men" = rgb(0.1,0.2,0.3), "Women" = rgb(0.1,0.2,0.3)))+
   scale_shape_manual(values = c("Men" = 5, "Women" = 6)) +
   scale_fill_discrete(name="Gender") +
-  labs(x = "Year", y = "Marathon Time)
+  labs(x = "Year", y = "Marathon Time")
 ```
 
 ## 3 - US counties
