@@ -34,7 +34,7 @@ knitr::opts_chunk$set(
 
 glimpse(accidents)
 ## 1 - Road traffic accidents in Edinburgh
-```{r create ggplot by creating a separate column of day types and creating a plot comparing based on type of day}
+```{r create ggplot for road accidents}
 
 day_type_vector <- c(Monday = "Weekday", Tuesday = "Weekday", Wednesday = "Weekday", Thursday = "Weekday", Friday = "Weekday",Saturday = "Weekend", Sunday = "Weekend")
 
