@@ -6,6 +6,8 @@ format:
     embed-resources: true
 toc: true
 ---
+
+```{r}
 #install packages and download data
 library()
 install.packages("pacman")
@@ -35,6 +37,8 @@ knitr::opts_chunk$set(
 
 
 glimpse(accidents)
+```
+
 ## 1 - Road traffic accidents in Edinburgh
 ```{r create ggplot for road accidents}
 
