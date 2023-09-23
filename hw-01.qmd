@@ -9,7 +9,6 @@ toc: true
 
 ```{r}
 #install packages and download data
-library()
 install.packages("pacman")
 pacman::p_load("tidyverse")
 install.packages("devtools")
@@ -193,7 +192,7 @@ ggplot(napoleon$troops, aes(long, lat))  +
       
 #Create a plot that indicates the amount of survivors indicated by size. Direction is indicated by different colors. The colors are indicated by the direction of advancing or retreat. 
 breaks <- c(1, 2, 3) * 10^5 
-ggplot(napoleon$troops, aes(long, lat)) +
+plot_troops <- ggplot(napoleon$troops, aes(long, lat)) +
         geom_path(aes(size = survivors, colour = direction, group = group),
                   lineend="round") +
     scale_size("Survivors", range = c(1,10), #c(0.5, 15),
