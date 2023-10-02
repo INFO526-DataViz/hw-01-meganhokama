@@ -6,6 +6,8 @@ format:
     embed-resources: true
 toc: true
 ---
+```{r}
+#|label: install packages for exercises
 #install packages and download data
 library()
 install.packages("pacman")
@@ -31,12 +33,11 @@ knitr::opts_chunk$set(
   fig.align = "center", #center align figures
   dpi = 300             #higher dpi, sharper image
 )
+```
 
-
-
-glimpse(accidents)
 ## 1 - Road traffic accidents in Edinburgh
-```{r create ggplot for road accidents}
+```{r}
+#|label: create ggplot for road accidents}
 
 day_type_vector <- c(Monday = "Weekday", Tuesday = "Weekday", Wednesday = "Weekday", Thursday = "Weekday", Friday = "Weekday",Saturday = "Weekend", Sunday = "Weekend")
 
@@ -61,20 +62,20 @@ ggplot(data = accidents, aes(x = time, fill = severity)) +
   )
 ```
 
-```
 
-#Interpretation: There are no fatal accidents on the weekend compared to the weekdays. On both weekends and weekdays, accidents increase in density during the evening hours (16:00-20:00). 
+Interpretation: There are no fatal accidents on the weekend compared to the weekdays. On both weekends and weekdays, accidents increase in density during the evening hours (16:00-20:00). In regards to why a density plot was used, when you have data points that overlap or are closely packed, density plots can be more informative than scatter plots. They show the density of points in the overlapping regions, providing a better sense of the data's distribution. Additionally, the overlapping data as well as the peaks in the plot we were supposed to recreate suggests that a density plot might be most appropriate here. 
 
 ## 2 - NYC marathon winners
 
-```{r Comparing Histograms and Boxplots to determine marathon time and gender}
+```{r}
+#|label: Comparing Histograms and Boxplots to determine marathon time and gender}
 install.packages("openintro")
 library("openintro")
 
 #Part A
 nyc <- nyc_marathon
-library(psych)
-describe(nyc)
+nyc|>
+  glimpse()
 
 #Histogram with distribution of marathon times of all runners 
 nyc%>%
