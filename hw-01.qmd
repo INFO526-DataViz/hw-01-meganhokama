@@ -12,6 +12,7 @@ toc: true
 pacman::p_load(tidyverse,
                ggridges,
                dsbox,
+               dlookr, # GC added this
                dplyr,
                janitor)
 pacman::p_load_gh("rstudio-education/dsbox")
