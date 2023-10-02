@@ -6,10 +6,8 @@ format:
     embed-resources: true
 toc: true
 ---
-<<<<<<< HEAD
 
 ```{r}
-#>>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
 #install packages and download data
 pacman::p_load(tidyverse,
                ggridges,
@@ -79,7 +77,6 @@ library("openintro")
 nyc <- nyc_marathon
 nyc|>
   glimpse()
-nyc <- nyc[is.finite(nyc$time_hrs),
 
 #Histogram with distribution of marathon times of all runners 
 nyc%>%
