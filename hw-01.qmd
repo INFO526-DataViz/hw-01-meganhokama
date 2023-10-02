@@ -7,9 +7,6 @@ format:
 toc: true
 ---
 <<<<<<< HEAD
-```{r}
-#|label: install packages for exercises
-=======
 
 ```{r}
 #>>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
