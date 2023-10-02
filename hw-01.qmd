@@ -6,18 +6,20 @@ format:
     embed-resources: true
 toc: true
 ---
+<<<<<<< HEAD
 ```{r}
 #|label: install packages for exercises
+=======
+
+```{r}
+>>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
 #install packages and download data
-library()
-install.packages("pacman")
-pacman::p_load("tidyverse")
-install.packages("devtools")
-library("devtools")
-devtools::install_github("rstudio-education/dsbox")
-install.packages('dsbox')
-library(dsbox)
-library(tidyverse)
+pacman::p_load(tidyverse,
+               ggridges,
+               dsbox,
+               dplyr,
+               janitor)
+pacman::p_load_gh("rstudio-education/dsbox")
 
 #set theme for ggplot
 ggplot2::theme_set(ggplot2::theme_minimal(base_size=11))
@@ -35,6 +37,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+<<<<<<< HEAD
+=======
+
+
+glimpse(accidents)
+```
+
+>>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
 ## 1 - Road traffic accidents in Edinburgh
 ```{r}
 #|label: create ggplot for road accidents}
@@ -76,6 +86,7 @@ library("openintro")
 nyc <- nyc_marathon
 nyc|>
   glimpse()
+nyc <- nyc[is.finite(nyc$time_hrs),
 
 #Histogram with distribution of marathon times of all runners 
 nyc%>%
@@ -85,13 +96,25 @@ nyc%>%
         y = "Runner Count")
 
 #Boxplot with distribution of marathon times of all runners
-nyc%>%
-  ggplot(aes(x=time_hrs)) +
+boxplot <- nyc %>%
+  ggplot(aes(y = time_hrs)) +
+  geom_boxplot(fill = "lightblue", color = "black") +  # Box plot
+  labs(y = "Marathon Time (hours)") +  # Label the y-axis
+  ggtitle("Box Plot of Marathon Times") +  # Add a title
+  theme_minimal()  # Use a clean theme for better clarity
+  
+print(boxplot)
+
+ggplot(nyc, aes(x=time_hrs)) +
   geom_boxplot() +
   labs(x = "Marathon Time",
       y = "Runner Count")
-  
-#The histogram gives more information in regards to the count for all time hours. 
+```
+Interpretation: The histogram gives more information in regards to the count for all time hours.The histogram provides a detailed view of the frequency distribution, while the box plot offers a concise summary with emphasis on central tendency and outliers.
+
+
+```{r}
+#| label: Part B
 
 #Part B
 ggplot(nyc, aes(x=division, y=time_hrs, fill=division)) + 
@@ -100,9 +123,11 @@ scale_fill_manual(values = c("Men" = rgb(0.1,0.2,0.3), "Women" = rgb(0.1,0.2,0.3
 theme(legend.position="none")
 labs(x = "Gender",
       y = "Marathon Times") 
-      
-    #Based on the box plots, men have lower marathon times compared to women. Additionally, it shows women having more variation and outliers in terms of marathon times compared to men. 
+```      
 
+Interpretation: Based on the box plots, men have lower marathon times compared to women. Additionally, it shows women having more variation and outliers in terms of marathon times compared to men. 
+
+```{r}
 #Part C
 #The redundancy is the gender legend as it is not needed since the x-axis already indicates this. 
 ggplot(nyc, aes(x=division, y=time_hrs)) + 
@@ -110,7 +135,9 @@ geom_boxplot() +
 theme(legend.position="none")
 labs(x = "Gender",
       y = "Marathon Times") 
+```
 
+```{r}
 #Part D -It's not running and keeps giving an error in recognizing geom_line
 ggplot(nyc, aes(x=year, y=time_hrs, shape=division))+
   geom_line() +
@@ -121,19 +148,83 @@ ggplot(nyc, aes(x=year, y=time_hrs, shape=division))+
 ```
 
 ## 3 - US counties
-```{r US County Plots
+```{r} 
+#|label: US County Plots
+install.packages("openintro")
+library(openintro)
+county <- na.omit(county)
 county
 #Part A
 ggplot(county) + 
   geom_point( aes(x=median_edu, y=median_hh_income))+
   geom_boxplot(aes(x = smoking_ban, y = pop2017))
+```
   
-#Firstly, the variables of x and y for the scatterplot and boxplot do not align making it difficult to visualize the data. Additionally, I am having a difficult time making a connection to what the person would want to find when combining the box plot and the scatter plot. Why are we looking at these specific variables and what is the story we are trying to tell?
+Firstly, the variables of x and y for the scatterplot and boxplot do not align making it difficult to visualize the data. Additionally, I am having a difficult time making a connection to what the person would want to find when combining the box plot and the scatter plot. Why are we looking at these specific variables and what is the story we are trying to tell?
 
-#Part B
-#I think the plot that groups them in a more vertical way, similar to columns. This is visually more easier to interpret when trying to compare across education levels as the y-axis doesn't seem as squished with all the values listed in each group. This reduces redundancy in the plot and allows for easier comparison. 
+Part B- 
+I think the plot that groups them in a more vertical way, similar to columns. This is visually more easier to interpret when trying to compare across education levels as the y-axis doesn't seem as squished with all the values listed in each group. This reduces redundancy in the plot and allows for easier comparison. 
 
 #Part C
+```{r create plot a}
+library(gridExtra)
+A<- ggplot(county,mapping=aes(homeownership,poverty))+
+  geom_point()+
+  labs(title = "Plot A")
+  
+```
+
+```{r create plot b}
+B<-ggplot(county,mapping=aes(homeownership,poverty))+
+  geom_point()+
+  geom_smooth(method = "loess",se=FALSE)+
+  labs(title = "Plot B")
+```
+
+```{r create plot c}
+C<-ggplot(county, aes(homeownership,poverty)) +
+  geom_point()+
+  geom_smooth(method = "gam",mapping = aes(group = metro),color = "green", se = FALSE) +
+  labs(title = "Plot C")
+```
+
+```{r create plot d}
+D<-ggplot(county, aes(homeownership,poverty)) +
+  geom_smooth(mapping = aes(group = metro), se = FALSE) +
+  geom_point()+
+  labs(title = "Plot D")
+```
+
+```{r create plot e}
+E<-ggplot(county, aes(homeownership,poverty)) +
+  geom_point(aes(color = metro)) +
+  geom_smooth(se = FALSE, aes(linetype = metro, group = metro))+
+  labs(title = "Plot E")
+```
+
+```{r Create plot F}
+F<-ggplot(county, aes(homeownership,poverty, colour = metro)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  labs(title = "Plot F")
+```
+
+```{r create Plot G}
+G<-ggplot(county, aes(homeownership, poverty)) +
+  geom_point(aes(color = metro)) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(title = "Plot G")
+
+```
+
+```{r Create Plot H and then arrange on grid}
+H<-ggplot(county,mapping=aes(homeownership,poverty))+
+  geom_point(aes(color = metro))+
+  labs(title = "Plot H")
+  
+grid.arrange(A, B, C, D, nrow = 2) 
+grid.arrange( E, F, G, H, nrow = 2) 
+
 ```
 
 ## 4 - Rental apartments in SF
@@ -157,21 +248,27 @@ nhood3 <-rent_sf2 %>%
 yearnhood<-nhood3 %>%
           filter(year %in% year2)
         
-yearnhood %>%
-  ggplot(aes(x = beds, y = price)) + 
-  geom_tile(aes(fill=nhood))+
-  scale_fill_discrete(name="Neighborhood") +
-  labs(title = "Rental prices per bedroom across different neighborhoods in San Francisco",
-        x = "Bedrooms",
-        y = "Price")
-        
-#I chose to use a Geom Tile since we are using three variables which is price, bedrooms, and neigbhorhood. According to lecture, this is one method that would be effective in illustrating 3 variables. However, I am having difficulty in displaying it correctly, the tiles are somewhat in a line shape and I might need guidance in fixing this. 
+# Load a color palette with more distinct colors
+install.packages("viridis")
+install.packages("viridisLite")
 
+library(viridis)
+
+yearnhood %>%
+  ggplot(aes(x = price)) + 
+  geom_histogram(binwidth = 200, aes(fill = nhood), position = "dodge") +
+  scale_fill_viridis(discrete = TRUE, option = "magma") +
+  geom_density(aes(y = ..count..), color = "black", size = .5, position = "identity", binwidth = 50) +  # Adjust position and binwidth
+  labs(title = "Histogram of Rental Prices by Neighborhood in San Francisco",
+       x = "Price",
+       y = "Frequency")
 ```
+
+Justification: By creating a histogram that has a color for each neighborhood, you can compare the distributions of price and bedrooms across different areas. This allows you to identify variations in property sizes and pricing strategies between neighborhoods. It can be essential for understanding market segmentation and tailoring marketing efforts.They allow you to see the frequency or density of data points within different ranges or bins, making it easy to identify central tendencies, ranges of values, and potential outliers.
+
 
 ## 5 - Napoleon’s march.
 ```{r Recreating the Napoleons March}
-#
 #Read data
 napoleon <- read_rds("data/napoleon.rds")
 glimpse(napoleon)
@@ -190,7 +287,7 @@ ggplot(napoleon$troops, aes(long, lat))  +
       
 #Create a plot that indicates the amount of survivors indicated by size. Direction is indicated by different colors. The colors are indicated by the direction of advancing or retreat. 
 breaks <- c(1, 2, 3) * 10^5 
-ggplot(napoleon$troops, aes(long, lat)) +
+plot_troops <- ggplot(napoleon$troops, aes(long, lat)) +
         geom_path(aes(size = survivors, colour = direction, group = group),
                   lineend="round") +
     scale_size("Survivors", range = c(1,10), #c(0.5, 15),
@@ -199,7 +296,6 @@ ggplot(napoleon$troops, aes(long, lat)) +
                        values = c("#E8CBAB", "#1F1A1B"), 
                        labels=c("Advance", "Retreat"))
                        
-
 
 #Add in the cities using geom text. This will allow us to put in labels of the cities corresponding to certain points on the graph. 
 plot_troops +   
