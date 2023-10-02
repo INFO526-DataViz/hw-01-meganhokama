@@ -12,7 +12,7 @@ toc: true
 =======
 
 ```{r}
->>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
+#>>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
 #install packages and download data
 pacman::p_load(tidyverse,
                ggridges,
@@ -44,7 +44,7 @@ knitr::opts_chunk$set(
 glimpse(accidents)
 ```
 
->>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
+#>>>>>>> 12869cb8e0312826aa8a45e29bca88091a105fe4
 ## 1 - Road traffic accidents in Edinburgh
 ```{r}
 #|label: create ggplot for road accidents}
