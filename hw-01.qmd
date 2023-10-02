@@ -27,7 +27,7 @@ options(width = 65)
 knitr::opts_chunk$set(
   fig.width = 7,        #7" width
   fig.asp = 0.618,      #the golden ratio
-  fig.retina = 3,       #dpi multiplier for displaying HTML output on retina
+  fig.retina = 2,       #dpi multiplier for displaying HTML output on retina
   fig.align = "center", #center align figures
   dpi = 300             #higher dpi, sharper image
 )
